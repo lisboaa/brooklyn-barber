@@ -4,5 +4,14 @@
   "port": 5434,
   "username": "postgres",
   "password": "docker",
-  "database": "brooklyn-barber"
+  "database": "brooklyn-barber",
+  "entities": [
+    "./src/models/*.ts"
+  ],
+  "migrations": [
+    "./src/database/migrations/*.ts"
+  ],
+  "cli": {
+    "migrationsDir": "./src/database/migrations/"
+  }
 }
