@@ -21,7 +21,7 @@ class User {
   email: string;
 
   @Column()
-  avatar: string;
+  avatar: String;
 
   @CreateDateColumn()
   created_at: Date;
