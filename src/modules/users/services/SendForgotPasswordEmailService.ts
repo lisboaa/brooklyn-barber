@@ -1,6 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 
 import IUsersRepository from '../repositories/IUserRepository';
+import IUserTokensRepository from '../repositories/IUserTokensRepository';
 import IMailProvider from '@shared/container/providers/MailProvider/Models/IMailProvider';
 import AppError from '@shared/errors/AppError';
 
@@ -16,14 +17,19 @@ class SendForgotPasswordEmailService {
 
         @inject('MailProvider')
         private mailProvider: IMailProvider,
+
+        @inject('IUserTokensRepository')
+        private userTokensRepository: IUserTokensRepository,
     ) {}
 
     public async excute({ email }: IRequestDTO): Promise<void> {
-        const checkuserExists = await this.userRepository.findByEmail(email);
+        const user = await this.userRepository.findByEmail(email);
 
-        if(!checkuserExists) {
+        if(!user) {
             throw new AppError('User does not exists.');
         }
+
+        await this.userTokensRepository.generate(user.id);
 
         this.mailProvider.sendMail(
             email,
