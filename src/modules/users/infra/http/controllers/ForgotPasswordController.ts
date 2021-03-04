@@ -1,10 +1,6 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
-import UsersRepository from '@modules/users/infra/typeorm/repositories/UserRepository';
-
-import AuthenticateUserService from '@modules/users/services/AuthenticateUserService';
-
 import SendForgetPasswordEmailService from '@modules/users/services/SendForgotPasswordEmailService';
 
 export default class ForgotPasswordController {
