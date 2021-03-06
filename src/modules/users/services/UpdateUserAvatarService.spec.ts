@@ -4,22 +4,28 @@ import FakeStorageProvider from '@shared/container/providers/StorageProvider/fak
 import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import UpdateUserAvatarService from './UpdateUserAvatarService';
 
-//Descreve o nome do teste.
+let fakesUsersRepository: FakeUsersRepository;
+let fakeStorageProvider: FakeStorageProvider;
+let updateUserAvatar: UpdateUserAvatarService;
+
+//:Descreve o nome do teste.
 describe('UpdateUserAvatar', () => {
-    
-    //Descrição do teste que será feito.
-    it('should be able to create a new user', async () => {
+    beforeEach(() => {
         
         //instancia os a base de dados fake que sera utilizada para realizar o teste.
-        const fakesUsersRepository = new FakeUsersRepository();
-        const fakeHashProvider = new FakeStorageProvider();
+        fakesUsersRepository = new FakeUsersRepository();
+        fakeStorageProvider = new FakeStorageProvider();
 
         //instancia o service que será utilizado para fazer os teste e passa
         //como parametro o repository fake para que seja consumido os dados fake.
-        const updateUserAvatar = new UpdateUserAvatarService(
-            fakesUsersRepository, fakeHashProvider
+        updateUserAvatar = new UpdateUserAvatarService(
+            fakesUsersRepository, fakeStorageProvider
         );
 
+    });
+    
+    //Descrição do teste que será feito.
+    it('should be able to create a new user', async () => {
         const user = await fakesUsersRepository.create({
             name: 'John Doe',
             email: 'johndoe@example.com.br',
@@ -37,20 +43,7 @@ describe('UpdateUserAvatar', () => {
         //Descrição do teste que será feito.
 
         it('should delete old avatar when updating new one', async () => {
-        
-            //instancia os a base de dados fake que sera utilizada para realizar o teste.
-
-            const fakesUsersRepository = new FakeUsersRepository();
-            const fakeStorageProvider = new FakeStorageProvider();
-    
             const deleteFile = jest.spyOn(fakeStorageProvider, 'deleteFile');
-
-            //instancia o service que será utilizado para fazer os teste e passa
-            //como parametro o repository fake para que seja consumido os dados fake.
-
-            const updateUserAvatar = new UpdateUserAvatarService(
-                fakesUsersRepository, fakeStorageProvider
-            );
 
             const user = await fakesUsersRepository.create({
                 name: 'John Doe',

@@ -4,22 +4,26 @@ import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import CreateUserService from './CreateUserService';
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
 
+let fakesUsersRepository:FakeUsersRepository;
+let fakeHashProvider:FakeHashProvider;
+let createUser:CreateUserService;
+
 //Descreve o nome do teste.
 describe('CreateUser', () => {
-    
-    //Descrição do teste que será feito.
-    it('should be able to create a new user', async () => {
-        
+    beforeEach(() => {        
         //instancia os a base de dados fake que sera utilizada para realizar o teste.
-        const fakesUsersRepository = new FakeUsersRepository();
-        const fakeHashProvider = new FakeHashProvider();
+        fakesUsersRepository = new FakeUsersRepository();
+        fakeHashProvider = new FakeHashProvider();
 
         //instancia o service que será utilizado para fazer os teste e passa
         //como parametro o repository fake para que seja consumido os dados fake.
-        const createUser = new CreateUserService(
+        createUser = new CreateUserService(
             fakesUsersRepository, fakeHashProvider
         );
-
+    })
+    
+    //Descrição do teste que será feito.
+    it('should be able to create a new user', async () => {
         const user = await createUser.excute({
             name: 'John Doe',
             email: 'johndoe@gmail.com',
@@ -30,16 +34,6 @@ describe('CreateUser', () => {
     });
 
     it('should not be able to create a new user with same amail from another', async () => {
-        
-        const fakesUsersRepository = new FakeUsersRepository();
-        const fakeHashProvider = new FakeHashProvider();
-        
-        const createUser = new CreateUserService(
-            fakesUsersRepository, fakeHashProvider
-        );
-
-        const appointmentDate = new Date(2020, 4, 10, 11);
-
         await createUser.excute({
             name: 'John Doe',
             email: 'johndoe@gmail.com',
