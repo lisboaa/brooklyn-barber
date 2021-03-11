@@ -42,6 +42,16 @@ describe('UpdateProfile', () => {
         expect(updateUser.email).toBe('johntre@example.com.br');
     });
 
+    it('should not be able to update the profile non-existing user', async () => {
+        expect(
+            UpdateProfile.execute({
+            user_id: 'non-existing-user-id',
+            name: 'John Trê',
+            email: 'johntre@example.com.br',
+        }),
+        ).rejects.toBeInstanceOf(AppError);
+    });
+
         
     //Descrição do teste que será feito.
     it('should be able to change to another user email', async () => {
