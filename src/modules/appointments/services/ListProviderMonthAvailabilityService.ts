@@ -30,7 +30,7 @@ class ListProviderMonthAvailabilitvService {
       {
         provider_id,
         month,
-        year,
+        year
       },
     );
 
