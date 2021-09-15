@@ -1,9 +1,11 @@
 import AppError from '@shared/errors/AppError';
 
+import FakeNotificationsRepository from '@modules/notifications/repositories/fakes/FakeNotificationsRepository';
 import FakeAppointmentsRepository from '../repositories/fakes/FakeAppointmentsRepository';
 import CreateAppointmentService from './CreateAppointmentService';
 
 let fakesAppointmentsRepository: FakeAppointmentsRepository;
+let fakeNotificationsRepository: FakeNotificationsRepository;
 let createAppointment: CreateAppointmentService;
 
 //Descreve o nome do teste.
@@ -11,11 +13,13 @@ describe('CreateAppointment', () => {
     beforeEach(() => {        
         //instancia os a base de dados fake que sera utilizada para realizar o teste.
         fakesAppointmentsRepository = new FakeAppointmentsRepository();
+        fakeNotificationsRepository = new FakeNotificationsRepository();
 
         //instancia o service que será utilizado para fazer os teste e passa
         //como parametro o repository fake para que seja consumido os dados fake.
         createAppointment = new CreateAppointmentService(
             fakesAppointmentsRepository,
+            fakeNotificationsRepository
         );
     });
     
